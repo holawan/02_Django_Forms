@@ -6,7 +6,6 @@
   
   <form action="{% url 'articles:create' %}" method="POST">
     {% csrf_token %}
-    <h1 style=""></h1>
     {{form.as_p}}
     {% comment %} <label for="title">Title: </label>
     <input type="text" id="title" name="title"><br>

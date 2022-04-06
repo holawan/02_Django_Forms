@@ -71,9 +71,3 @@ def update(request, pk):
         'form': form
     }
     return render(request, 'articles/update.html', context)
-
-    article = Article.objects.get(pk=pk)
-    form = ArticleForm(request.POST,instacne=article)
-    article=form.save()
-      
-    return redirect('articles:detail', article.pk)
