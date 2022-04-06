@@ -20,13 +20,21 @@ def new(request):
 
 # 제목과 내용을 누르고 제출을 했을 때 crate 변수로 가게되서 동작을 하고 마지막으로 redirect가 return 된다. 
 def create(request):
-    title = request.POST.get('title')
-    content = request.POST.get('content')
+    form = ArticleForm(request.POST)
+    #form에서 전달한 데이터가 유효하면 저장하고 detail을 redircet해라
+    if form.is_valid() :
+        # form.save()를 하면 생성된 객체를 리턴한다.
+        article = form.save()
+        return redirect('articles:detail',article.pk)
+    #유효하지 않으면 다시 new로 가라 
+    return redirect('articles:new')
+    # title = request.POST.get('title')
+    # content = request.POST.get('content')
 
-    article = Article(title=title, content=content)
-    article.save()
+    # article = Article(title=title, content=content)
+    # article.save()
 
-    return redirect('articles:detail', article.pk)
+    # return redirect('articles:detail', article.pk)
 
 
 def detail(request, pk):

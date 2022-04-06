@@ -20,7 +20,12 @@ from articles.models import Article
 #     region = forms.ChoiceField(choices = REGIONS_CHOICES, widget = forms.Select())
 
 class ArticleForm(forms.ModelForm) :
+    # 장고 모델을 참고해서 form을 만들어줌 
     class Meta :
         model = Article
+        # 전체 필드 출력하는 __all__
         fields = '__all__'
         #exclude = ('title',)
+
+# forms 라이브러리에서 파생된 ModelForm 클래스를 상속받음
+# 정의한 클래스 안에 Meta 클래스를 선언하고, 어떤 모델을 기반으로 Form을 작성할 것인지에 대한 정보를 Meta 클래스에 저장
