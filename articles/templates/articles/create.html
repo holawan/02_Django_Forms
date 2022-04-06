@@ -5,6 +5,7 @@
   <hr>
   
   <form action="{% url 'articles:create' %}" method="POST">
+    {% comment %} form에서 url을 안넣어줘도 어차피나한테 와서 상관 없지만 명시해주는게 좋다.{% endcomment %}
     {% csrf_token %}
     {{form.as_p}}
     {% comment %} <label for="title">Title: </label>
