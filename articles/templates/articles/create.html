@@ -30,5 +30,17 @@
     </div>
     <input type="submit">
   </form>
+  <hr>
+  <h2>2. Looping over the form's fields</h2>
+  <form action="{% url 'articles:create' %}" method="POST">
+    {% csrf_token %}
+
+    {% for field in  form%}
+      {{field.errors}}
+      {{field.label_tag}}
+      {{field}}
+    {% endfor %}
+    <input type="submit">
+  </form>
   <a href="{% url 'articles:index' %}">back</a>
 {% endblock content %}
