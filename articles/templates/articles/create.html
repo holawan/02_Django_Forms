@@ -13,5 +13,22 @@
     <textarea name="content" id="content" cols="30" rows="10"></textarea> {% endcomment %}
     <input type="submit">
   </form>
+
+  <h2>1. Rendering fields manually</h2>
+  <form action="{% url 'articles:create' %}" method="POST">
+    {% csrf_token %}
+
+    <div>
+      {{form.title.errors}}
+      {{form.title.label_tag}}
+      {{form.title}}
+    </div>
+    <div>
+      {{form.content.errors}}
+      {{form.content.label_tag}}
+      {{form.content}}
+    </div>
+    <input type="submit">
+  </form>
   <a href="{% url 'articles:index' %}">back</a>
 {% endblock content %}
