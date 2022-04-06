@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from .forms import ArticleForm
 from .models import Article
 
 # Create your views here.
@@ -11,7 +12,11 @@ def index(request):
 
 
 def new(request):
-    return render(request, 'articles/new.html')
+    form = ArticleForm()
+    context = {
+        'form' : form,
+    }
+    return render(request, 'articles/new.html',context)
 
 # 제목과 내용을 누르고 제출을 했을 때 crate 변수로 가게되서 동작을 하고 마지막으로 redirect가 return 된다. 
 def create(request):
