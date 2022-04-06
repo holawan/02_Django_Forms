@@ -27,7 +27,7 @@ class ArticleForm(forms.ModelForm) :
         widget=forms.TextInput(
             # attributes
             attrs = {
-                'class' : 'my-title',
+                'class' : 'my-title form-control',
                 'placeholder':'Enter the title',
 
             }
@@ -36,7 +36,7 @@ class ArticleForm(forms.ModelForm) :
     content = forms.CharField(
         widget = forms.Textarea(
             attrs={
-                'class' : 'my-content',
+                'class' : 'my-content form-control',
                 'placeholder' :'Enter the content',
 
             }
