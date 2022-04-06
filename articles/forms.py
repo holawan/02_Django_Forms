@@ -1,3 +1,4 @@
+from pickle import TRUE
 from django import forms
 
 from articles.models import Article
@@ -51,5 +52,13 @@ class ArticleForm(forms.ModelForm) :
         fields = '__all__'
         #exclude = ('title',)
 
-# forms 라이브러리에서 파생된 ModelForm 클래스를 상속받음
-# 정의한 클래스 안에 Meta 클래스를 선언하고, 어떤 모델을 기반으로 Form을 작성할 것인지에 대한 정보를 Meta 클래스에 저장
+# updateform을 만들 때 제목은 변경 못하게 하고 싶다면,
+#기존 사용하던 createform을 상속 받은 후 
+#원하느 필드를 읽기전용으로 만들거나 작동하지 않게 만듬 
+class Article_updateForm(ArticleForm) :
+    def __init__(self,*args,**kwargs) :
+        super().__init__(*args,**kwargs)
+
+        self.fields['title'].widget.attrs['readonly'] = True
+        
+        # self.fields['title'].disabled = True

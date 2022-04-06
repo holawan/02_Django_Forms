@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import ArticleForm
+from .forms import Article_updateForm, ArticleForm
 from .models import Article
 
 # Create your views here.
@@ -34,13 +34,13 @@ def update(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == 'POST' : 
         # instacne=article을 안써주면 새로운 글을 만든다. 
-        form = ArticleForm(request.POST,instance=article)
+        form = Article_updateForm(request.POST,instance=article)
         if form.is_valid() :
             article=form.save()
             return redirect('articles:detail', article.pk) 
     else :
         # 기존 정보를 받아서 update.html을 표시하기 
-        form = ArticleForm(instance=article)
+        form = Article_updateForm(instance=article)
     context = {
         'article' : article,
         'form': form
