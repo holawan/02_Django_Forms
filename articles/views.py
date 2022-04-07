@@ -19,7 +19,7 @@ def create(request):
         if form.is_valid() :
             # form.save()를 하면 생성된 객체를 리턴한다.
             article = form.save()
-            return redirect('articles:create',article.pk)
+            return redirect('articles:detail',article.pk)
 
     else :
 
@@ -28,7 +28,7 @@ def create(request):
         'form' : form,
     }
     # 유효성 검사를 통과하지 못하면 form은 에러메시지를 담고 있다. 그래서 에러메시지를 출력한다. 
-    return render(request, 'articles/create.html',context)
+    return render(request, 'articles/form.html',context)
 
 def update(request, pk):
     article = Article.objects.get(pk=pk)
@@ -45,7 +45,7 @@ def update(request, pk):
         'article' : article,
         'form': form
     }
-    return render(request, 'articles/update.html', context)
+    return render(request, 'articles/form.html', context)
 
 def detail(request, pk):
     article = Article.objects.get(pk=pk)
