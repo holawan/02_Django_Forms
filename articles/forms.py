@@ -59,6 +59,6 @@ class Article_updateForm(ArticleForm) :
     def __init__(self,*args,**kwargs) :
         super().__init__(*args,**kwargs)
 
-        self.fields['title'].widget.attrs['readonly'] = True
+        # self.fields['title'].widget.attrs['readonly'] = True
         
-        # self.fields['title'].disabled = True
+        # self.fields['content'].disabled = True

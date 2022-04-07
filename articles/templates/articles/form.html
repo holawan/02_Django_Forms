@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
+
 {% load bootstrap5 %}
 
 {% block content %}
-  <br>
-  {{request.resolver_match}}
-  <h1>EDIT</h1>
+  {% if request.resolver_match == 'create' %}
+    <h1>CREATE</h1>
+  {% else %}
+    <h1>EDIT</h1>
+  {% endif %}
   <hr>
   <form action="" method="POST">
     {% csrf_token %}
@@ -12,5 +15,10 @@
     {% comment %} {{form.as_p}} {% endcomment %}
     <input type="submit">
   </form>
+
+  {% if request.resolver_match == 'create' %}
+  <a href="{% url 'articles:index' %}">back</a>
+  {% endif %}
+  <a href="{% url 'articles:index' %}">Home</a>
   <a href="{% url 'articles:detail' article.pk %}">back</a>
 {% endblock content %}
