@@ -36,7 +36,7 @@ def update(request, pk):
     article = get_object_or_404(Article,pk=pk)
     if request.method == 'POST' : 
         # instacne=article을 안써주면 새로운 글을 만든다. 
-        form = ArticleForm(request.POST,instance=article)
+        form = ArticleForm(request.POST, request.FILES,instance=article)
         if form.is_valid() :
             article=form.save()
             return redirect('articles:detail', article.pk) 
