@@ -6,7 +6,7 @@
   <h1>CREATE</h1>
   <hr>
   
-  <form action="" method="POST">
+  <form action="{% url 'article:create' %}" method="POST" enctype="multipart/form-data">
     {% comment %} form에서 url을 안넣어줘도 어차피나한테 와서 상관 없지만 명시해주는게 좋다.{% endcomment %}
     {% csrf_token %}
     {{form.as_p}}

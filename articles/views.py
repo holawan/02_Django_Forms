@@ -13,11 +13,9 @@ def index(request):
     return render(request, 'articles/index.html', context)
 
 # 요청에 따라 실행을 구분하고 new와 create 함수 합치기 
-@require_http_methods(['GET','POST'])
 def create(request):
     if request.method == 'POST' :
-    
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         #form에서 전달한 데이터가 유효하면 저장하고 detail을 redircet해라
         if form.is_valid() :
             # form.save()를 하면 생성된 객체를 리턴한다.
@@ -25,7 +23,6 @@ def create(request):
             return redirect('articles:detail',article.pk)
 
     else :
-
         form = ArticleForm()
     context = {
         'form' : form,
