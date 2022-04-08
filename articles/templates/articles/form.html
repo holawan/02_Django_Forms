@@ -3,9 +3,11 @@
 {% load bootstrap5 %}
 
 {% block content %}
+{% comment %} url이 create이면  {% endcomment %}
   {% if request.resolver_match.url_name == 'create' %}
     <h1>CREATE</h1>
   {% else %}
+  {% comment %} edit이면  {% endcomment %}
     <h1>EDIT</h1>
   {% endif %}
   <hr>
@@ -17,6 +19,7 @@
   </form>
 
   {% if request.resolver_match.url_name == 'create' %}
+  {% comment %} url이 crate면 메인으로 가는 back 만들기 {% endcomment %}
   <a href="{% url 'articles:index' %}">back</a>
   {% else %}
   <a href="{% url 'articles:index' %}">Home</a>

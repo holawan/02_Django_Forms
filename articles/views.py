@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .forms import Article_updateForm, ArticleForm
 from .models import Article
 
@@ -48,7 +48,8 @@ def update(request, pk):
     return render(request, 'articles/form.html', context)
 
 def detail(request, pk):
-    article = Article.objects.get(pk=pk)
+    # article = Article.objects.get(pk=pk)
+    article = get_object_or_404(Article,pk=pk)
     context = {
         'article': article,
     }
