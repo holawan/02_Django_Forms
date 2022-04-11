@@ -9,12 +9,14 @@
 </head>
 <body>
   <div class="container">
+    {% comment %} 인증되어있는 유저라면  {% endcomment %}
     {% if request.user.is_authenticated %}
       <h3>Hello, {{user}}</h3>
       <form action="{% url 'accounts:logout' %}" method="POST">
         {% csrf_token %}
         <input class="btn btn-danger" type="submit" value = "Logout">
       </form>
+      {% comment %} anonymous라면  {% endcomment %}
     {% else %}
       <a href="{% url 'accounts:login' %}" class="btn btn-info" >Login</a>  
     {% endif %}

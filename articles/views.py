@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from .forms import Article_updateForm, ArticleForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from .models import Article
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 @require_safe
@@ -13,6 +14,7 @@ def index(request):
     return render(request, 'articles/index.html', context)
 
 # 요청에 따라 실행을 구분하고 new와 create 함수 합치기 
+@login_required
 def create(request):
     if request.method == 'POST' :
         form = ArticleForm(request.POST, request.FILES)
@@ -31,6 +33,7 @@ def create(request):
     return render(request, 'articles/form.html',context)
 
 #GET과 POST만 허용한다. 아니면 405에러 리턴 
+@login_required
 @require_http_methods(['GET','POST'])
 def update(request, pk):
     article = get_object_or_404(Article,pk=pk)
@@ -60,6 +63,7 @@ def detail(request, pk):
     return render(request, 'articles/detail.html', context)
 
 @require_POST
+@login_required
 def delete(request, pk):
     article = get_object_or_404(Article,pk=pk)
     article.delete()
