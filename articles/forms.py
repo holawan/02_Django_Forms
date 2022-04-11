@@ -1,4 +1,3 @@
-from pickle import TRUE
 from django import forms
 
 from articles.models import Article
