@@ -6,7 +6,7 @@ from django.contrib.auth import login as auth_login
 def login(request) :
 
     if request.method == 'POST' :
-        AuthenticationForm(request,request.post)
+        form = AuthenticationForm(request,request.POST)
         if form.is_valid() :
             user = form.get_user()
             auth_login(request,user)
