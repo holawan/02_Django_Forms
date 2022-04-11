@@ -12,7 +12,7 @@ class Article(models.Model):
         upload_to='thumbnails/',
         processors=[Thumbnail(200, 300)],
         format='JPEG',
-        options={'quality': 60},null=True)
+        options={'quality': 60})
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
