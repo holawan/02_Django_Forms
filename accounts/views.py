@@ -17,7 +17,7 @@ def login(request) :
             #인증이 되었다면 로그인 진행
             user = form.get_user()
             auth_login(request,user)
-            return redirect('articles:index')
+            return redirect(request.GET.get('next') or 'articles:index')
     
     else :
         #장고의 built-in login_form
