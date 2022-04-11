@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.forms import AuthenticationForm
 # Create your views here.
 from django.contrib.auth import login as auth_login
-
+from django.contrib.auth import logout as auth_logout
+from django.views.decorators.http import require_http_methods,require_POST
 def login(request) :
 
     if request.method == 'POST' :
@@ -19,3 +20,9 @@ def login(request) :
         'form' : form,
     }
     return render(request,'accounts/login.html',context)
+
+
+@require_POST
+def logout(request):
+    auth_logout(request)
+    return redirect('articles:index')
