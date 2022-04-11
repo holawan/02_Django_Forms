@@ -17,6 +17,10 @@
         <input class="btn btn-danger" type="submit" value = "Logout">
       </form>
       {% comment %} anonymous라면  {% endcomment %}
+      <form action="{% url 'accounts:delete' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="회원탈퇴" class="btn btn-danger">
+      </form>
     {% else %}
       <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Signup</a>
       <a href="{% url 'accounts:login' %}" class="btn btn-info" >Login</a>  
