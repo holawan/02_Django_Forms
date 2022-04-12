@@ -6,7 +6,7 @@ from django.contrib.auth import logout as auth_logout
 from django.views.decorators.http import require_http_methods,require_POST
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserChangeForm
-
+from django.contrib.auth import update_session_auth_hash
 @require_http_methods(['GET','POST'])
 def login(request) :
     # 로그인 되어있으면 로그인 못하게 
@@ -79,11 +79,15 @@ def update(request) :
     }
     return render(request,'accounts/update.html',context)
 
+@login_required
 def change_password(request) :
+
     if request.method == 'POST' :
         form = PasswordChangeForm(request.user,request.POST) 
         if form.is_valid() :
             form.save()
+            auth_login(request,form.save())
+            # update_session_auth_hash(request,form.save())
             return redirect('articles:index')
     else :
         form = PasswordChangeForm(request.user)
