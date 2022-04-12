@@ -3,10 +3,10 @@ from django.contrib.auth.forms import AuthenticationForm,UserCreationForm,Passwo
 # Create your views here.
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from django.views.decorators.http import require_http_methods,require_POST
+from django.views.decorators.http import require_http_methods,require_POST,require_safe
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserChangeForm
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth import update_session_auth_hash,get_user_model
 @require_http_methods(['GET','POST'])
 def login(request) :
     # 로그인 되어있으면 로그인 못하게 
@@ -39,7 +39,7 @@ def logout(request):
 
 @require_http_methods(['GET','POST'])
 def signup(request) :
-    if request.user_is_authenticated:
+    if request.user.is_authenticated:
         return redirect('articles:index')
     if request.method == 'POST' :
         form=UserCreationForm(request.POST)
@@ -58,7 +58,7 @@ def signup(request) :
 
 @require_POST
 def delete(request) :
-    if request.user_is_authenticated:
+    if request.user.is_authenticated:
         #반드시 회원 탈퇴 후 로그아웃 함수 호출 
         request.user.delete()
         auth_logout(request)
@@ -97,3 +97,13 @@ def change_password(request) :
     }
 
     return render(request, 'accounts/change_password.html',context)
+
+@require_safe
+def index(request) :
+    User = get_user_model()
+    users = User.objects.all()
+
+    context = {
+        'users':users
+    }
+    return render(request,'accounts/index.html',context)

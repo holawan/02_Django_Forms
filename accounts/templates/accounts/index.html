@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <h1>userlist</h1>
+  {% for user in users %}
+    유저 {{user.pk}} : {{user}}
+    <hr>
+  {% endfor %}
+
+{% endblock content %}
