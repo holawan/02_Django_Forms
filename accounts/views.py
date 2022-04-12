@@ -1,9 +1,10 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth.forms import AuthenticationForm,UserCreationForm,UserChangeForm
+from django.contrib.auth.forms import AuthenticationForm,UserCreationForm,PasswordChangeForm
 # Create your views here.
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.views.decorators.http import require_http_methods,require_POST
+from django.contrib.auth.decorators import login_required
 from .forms import CustomUserChangeForm
 
 @require_http_methods(['GET','POST'])
@@ -63,7 +64,8 @@ def delete(request) :
         auth_logout(request)
     return redirect('articles:index')
 
-
+@login_required
+@require_http_methods(["GET","POST"])
 def update(request) :
     if request.method == 'POST' :
         form = CustomUserChangeForm(request.POST, instance=request.user)
@@ -76,3 +78,18 @@ def update(request) :
         'form' : form,
     }
     return render(request,'accounts/update.html',context)
+
+def change_password(request) :
+    if request.method == 'POST' :
+        form = PasswordChangeForm(request.user,request.POST) 
+        if form.is_valid() :
+            form.save()
+            return redirect('articles:index')
+    else :
+        form = PasswordChangeForm(request.user)
+    
+    context= {
+        'form' : form,
+    }
+
+    return render(request, 'accounts/change_password.html',context)
