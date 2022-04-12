@@ -4,7 +4,7 @@ from django.contrib.auth.forms import AuthenticationForm,UserCreationForm,UserCh
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.views.decorators.http import require_http_methods,require_POST
-
+from .forms import CustomUserChangeForm
 
 @require_http_methods(['GET','POST'])
 def login(request) :
@@ -66,9 +66,12 @@ def delete(request) :
 
 def update(request) :
     if request.method == 'POST' :
-        form = UserChangeForm(request.POST)
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid() :
+            form.save()
+            return redirect('articles:index')
     else :
-        form = UserChangeForm(instance=request.user)
+        form = CustomUserChangeForm(instance=request.user)
     context = {
         'form' : form,
     }
