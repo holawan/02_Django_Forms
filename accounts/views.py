@@ -86,8 +86,8 @@ def change_password(request) :
         form = PasswordChangeForm(request.user,request.POST) 
         if form.is_valid() :
             form.save()
-            auth_login(request,form.save())
-            # update_session_auth_hash(request,form.save())
+            # auth_login(request,form.save())
+            update_session_auth_hash(request,form.save())
             return redirect('articles:index')
     else :
         form = PasswordChangeForm(request.user)
