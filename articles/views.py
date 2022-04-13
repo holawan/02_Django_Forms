@@ -22,7 +22,9 @@ def create(request):
         #form에서 전달한 데이터가 유효하면 저장하고 detail을 redircet해라
         if form.is_valid() :
             # form.save()를 하면 생성된 객체를 리턴한다.
-            article = form.save()
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
             return redirect('articles:detail',article.pk)
 
     else :

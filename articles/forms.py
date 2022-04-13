@@ -31,8 +31,8 @@ class ArticleForm(forms.ModelForm) :
     class Meta :
         model = Article
         # 전체 필드 출력하는 __all__
-        fields = '__all__'
-        #exclude = ('title',)
+        # fields = '__all__'
+        exclude = ('user',)
 
 # updateform을 만들 때 제목은 변경 못하게 하고 싶다면,
 #기존 사용하던 createform을 상속 받은 후 
