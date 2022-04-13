@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect,get_object_or_404
 from .forms import Article_updateForm, ArticleForm,CommentForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
-from .models import Article
+from .models import Article,Comment
 from django.contrib.auth.decorators import login_required
 
 
@@ -59,9 +59,12 @@ def detail(request, pk):
     # 객체가 있으면 객체를 없으면 404에러를 담아서 반환 
     article = get_object_or_404(Article,pk=pk)
     comment_form = CommentForm()
+    # 조회한 article에 모든 댓글을 조회 
+    comments = article.comment_set.all()
     context = {
         'article': article,
         'comment_form' : comment_form,
+        'comments' : comments
     }
     return render(request, 'articles/detail.html', context)
 
@@ -85,3 +88,9 @@ def comments_create(request,pk) :
         #세이브 해줌 
         comment.save()
     return redirect('articles:detail',article.pk)
+
+def comments_delete(request,article_pk,comment_pk) :
+    comment = Comment.objects.get(pk=comment_pk)
+    # article_pk = comment.article.pk
+    comment.delete()
+    return redirect('articles:detail',article_pk)
