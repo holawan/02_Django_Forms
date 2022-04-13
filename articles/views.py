@@ -92,6 +92,7 @@ def comments_create(request,pk) :
             comment = comment_form.save(commit=False)
             # 누락된 article입력 해주고 
             comment.article = article
+            comment.user = request.user
             #세이브 해줌 
             comment.save()
         return redirect('articles:detail',article.pk)

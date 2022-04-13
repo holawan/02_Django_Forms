@@ -36,9 +36,14 @@
     </li>
   {% endfor %}
   <hr>
-  <form action="{% url 'articles:comments_create' article.pk %}" method="POST">
-    {% csrf_token %}
-    {{ comment_form }}
-    <input type="submit">
-  </form>
+  <h3>댓글</h3>
+  {% if request.user.is_authenticated %}
+    <form action="{% url 'articles:comments_create' article.pk %}" method="POST">
+      {% csrf_token %}
+      {{ comment_form }}
+      <input type="submit">
+    </form>
+  {% else %}
+    <a href="{% url 'accounts:login' %}">댓글을 작성하려면 로그인 하세요 ^^</a>
+  {% endif %}
 {% endblock content %}
