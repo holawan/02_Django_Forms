@@ -18,4 +18,10 @@
     <input type="submit" value="삭제">
   </form>
   <a href="{% url 'articles:index' %}">back</a>
+  <hr>
+  <form action="{% url 'articles:comments_create' article.pk %}" method="POST">
+    {% csrf_token %}
+    {{ comment_form }}
+    <input type="submit">
+  </form>
 {% endblock content %}

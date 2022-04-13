@@ -1,23 +1,6 @@
 from django import forms
 
-from articles.models import Article
-
-# class ArticleForm(forms.Form) :
-#     REGION_A = 'sl'
-#     REGION_B = 'dj'
-#     REGION_C = 'bs'
-
-#     REGIONS_CHOICES = [
-#         (REGION_A, '서울'),
-#         (REGION_B, '대전'),
-#         (REGION_C, '광주')
-#     ]
-
-#     # Models.py와 유사한 구조 (form 클래스를 상속받음)
-#     title = forms.CharField(max_length=10)
-#     content = forms.CharField(widget=forms.Textarea)
-#     # select 태그 만들기 
-#     region = forms.ChoiceField(choices = REGIONS_CHOICES, widget = forms.Select())
+from articles.models import Article,Comment
 
 class ArticleForm(forms.ModelForm) :
     # 장고 모델을 참고해서 form을 만들어줌 
@@ -61,3 +44,9 @@ class Article_updateForm(ArticleForm) :
         # self.fields['title'].widget.attrs['readonly'] = True
         
         # self.fields['content'].disabled = True
+
+class CommentForm(forms.ModelForm) :
+
+    class Meta :
+        model = Comment
+        fields = ('content',)

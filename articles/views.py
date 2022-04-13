@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect,get_object_or_404
-from .forms import Article_updateForm, ArticleForm
+from .forms import Article_updateForm, ArticleForm,CommentForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from .models import Article
 from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 @require_safe
@@ -57,8 +58,10 @@ def detail(request, pk):
     # article = Article.objects.get(pk=pk)
     # 객체가 있으면 객체를 없으면 404에러를 담아서 반환 
     article = get_object_or_404(Article,pk=pk)
+    comment_form = CommentForm()
     context = {
         'article': article,
+        'comment_form' : comment_form,
     }
     return render(request, 'articles/detail.html', context)
 
@@ -70,3 +73,15 @@ def delete(request, pk):
     return redirect('articles:index')
 
 
+@require_POST
+def comments_create(request,pk) :
+    article = Article.objects.get(pk=pk)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid() :
+        # commit의 기본값은 true이다. commit을 False로 바꿔서 DB에 저장은 안하고 인스턴스는 만들어줌 
+        comment = comment_form.save(commit=False)
+        # 누락된 article입력 해주고 
+        comment.article = article
+        #세이브 해줌 
+        comment.save()
+    return redirect('articles:detail',article.pk)
