@@ -40,15 +40,18 @@ def create(request):
 @require_http_methods(['GET','POST'])
 def update(request, pk):
     article = get_object_or_404(Article,pk=pk)
-    if request.method == 'POST' : 
-        # instacne=article을 안써주면 새로운 글을 만든다. 
-        form = ArticleForm(request.POST, request.FILES,instance=article)
-        if form.is_valid() :
-            article=form.save()
-            return redirect('articles:detail', article.pk) 
+    if request.user == article.user :
+        if request.method == 'POST' : 
+            # instacne=article을 안써주면 새로운 글을 만든다. 
+            form = ArticleForm(request.POST, request.FILES,instance=article)
+            if form.is_valid() :
+                article=form.save()
+                return redirect('articles:detail', article.pk) 
+        else :
+            # 기존 정보를 받아서 update.html을 표시하기 
+            form = ArticleForm(instance=article)
     else :
-        # 기존 정보를 받아서 update.html을 표시하기 
-        form = ArticleForm(instance=article)
+        return redirect('articles:index')
     context = {
         'article' : article,
         'form': form
@@ -74,7 +77,8 @@ def detail(request, pk):
 def delete(request, pk):
     if request.user.is_authenticated:
         article = get_object_or_404(Article,pk=pk)
-        article.delete()
+        if request.user == article.user :
+            article.delete()
     return redirect('articles:index')
 
 
