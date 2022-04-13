@@ -7,6 +7,10 @@ from django.views.decorators.http import require_http_methods,require_POST,requi
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserChangeForm
 from django.contrib.auth import update_session_auth_hash,get_user_model
+from .forms import CustomUserCreationForm
+
+
+
 @require_http_methods(['GET','POST'])
 def login(request) :
     # 로그인 되어있으면 로그인 못하게 
@@ -42,13 +46,13 @@ def signup(request) :
     if request.user.is_authenticated:
         return redirect('articles:index')
     if request.method == 'POST' :
-        form=UserCreationForm(request.POST)
+        form=CustomUserCreationForm(request.POST)
         if form.is_valid() :
             user = form.save()
             auth_login(request,user)
             return redirect('articles:index')
     else :
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
         
     context = {
         'form' :form,
