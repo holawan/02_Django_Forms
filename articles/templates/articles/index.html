@@ -21,11 +21,11 @@
         {% csrf_token %}
         {% if user in article.like_users.all %}
         <button class="btn" style="background-color : transparent;">
-          <i class="fa regular fa-heart" style="color:red"></i>
+          <i class="fa solid fa-heart" style="color:red"></i>
         </button>
         {% else %}
         <button class="btn" style="background-color : transparent;">
-          <i class="fa regular fa-heart" style="color:black" ></i>
+          <i class="fa regular fa-heart" ></i>
         </button>
         {% endif %}
       </form>

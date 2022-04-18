@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm,PasswordChangeForm
 # Create your views here.
 from django.contrib.auth import login as auth_login
@@ -111,3 +111,14 @@ def index(request) :
         'users':users
     }
     return render(request,'accounts/index.html',context)
+
+
+
+def profile(request,username) :
+    person = get_object_or_404(get_user_model(),username=username)
+    context = {
+        'person' : person,
+    }
+
+    return render(request, 'accounts/profile.html',context)
+

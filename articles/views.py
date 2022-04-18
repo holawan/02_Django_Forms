@@ -115,7 +115,10 @@ def likes(request,article_pk) :
     #누르는게 무조건 좋아요를 활성화하는 것은 아님 좋아요를 2번 누르면 취소되게 구현할 수 있음
     
     #이 게시글에 좋아요를 누른 유저 목록에 현재 요청하는 유저가 있다면 좋아요 취소 
-    if request.user in article.like_users.all() : 
+    
+    ##2가지 방법으로 조회 가능 
+    if article.like_users.filter(pk=request.user.pk).exists() :
+    # if request.user in article.like_users.all() : 
         article.like_users.remove(request.user)
     #아니면 좋아요
     else :
