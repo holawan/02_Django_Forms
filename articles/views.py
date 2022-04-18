@@ -107,3 +107,18 @@ def comments_delete(request,article_pk,comment_pk) :
             comment.delete()
         return redirect('articles:detail',article_pk)
     return redirect('accounts:login')
+
+
+def likes(request,article_pk) :
+    #어떤 객체에 좋아요가 눌렸는지 확인
+    article = get_object_or_404(Article, pk=article_pk)
+    #누르는게 무조건 좋아요를 활성화하는 것은 아님 좋아요를 2번 누르면 취소되게 구현할 수 있음
+    
+    #이 게시글에 좋아요를 누른 유저 목록에 현재 요청하는 유저가 있다면 좋아요 취소 
+    if request.user in article.like_users.all() : 
+        article.like_users.remove(request.user)
+    #아니면 좋아요
+    else :
+        article.like_users.add(request.user)
+    
+    return redirect('articles:index')

@@ -7,6 +7,7 @@
     <a href="{% url 'articles:create' %}">CREATE</a>
   {% else %}
     <a href="{% url 'accounts:login' %}?next=/articles/create/">[새 글을 작성하려면 로그인 하세요]</a>
+
   {% endif %}
   
   <hr>
@@ -15,6 +16,21 @@
     <p>글 번호: {{ article.pk }}</p>  
     <p>글 제목: {{ article.title }}</p>
     <p>글 내용: {{ article.content }}</p>
+    <div>
+      <form action="{% url 'articles:likes' article.pk %}" method='POST'>
+        {% csrf_token %}
+        {% if user in article.like_users.all %}
+        <button class="btn" style="background-color : transparent;">
+          <i class="fa regular fa-heart" style="color:red"></i>
+        </button>
+        {% else %}
+        <button class="btn" style="background-color : transparent;">
+          <i class="fa regular fa-heart" style="color:black" ></i>
+        </button>
+        {% endif %}
+      </form>
+    </div>
+
     <a href="{% url 'articles:detail' article.pk %}">DETAIL</a>
     <hr>
   {% endfor %}

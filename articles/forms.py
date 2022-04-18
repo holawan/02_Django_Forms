@@ -32,7 +32,7 @@ class ArticleForm(forms.ModelForm) :
         model = Article
         # 전체 필드 출력하는 __all__
         # fields = '__all__'
-        exclude = ('user',)
+        exclude = ('user','like_users',)
 
 # updateform을 만들 때 제목은 변경 못하게 하고 싶다면,
 #기존 사용하던 createform을 상속 받은 후 
