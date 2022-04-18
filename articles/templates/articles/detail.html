@@ -26,13 +26,15 @@
   {% if comments %}
     <p><b>{{comments|length}}개의 댓글이 있습니다.</b></p>
   {% endif %}
-  {% for comment in comments %}
+  {% for comment in article.comment_set.all %}
     <li>
-      {{comment.content}}
+      {{comment.user}}-{{comment.content}}
+      {% if request.user == comment.user %}
       <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST">
         {% csrf_token %}
         <input type="submit" value="삭제">
       </form>
+      {% endif %}
     </li>
   {% endfor %}
   <hr>
