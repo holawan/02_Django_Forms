@@ -3,6 +3,24 @@
 {% block content %}
   <h1>{{ person.username}}님의 프로필</h1>
   <hr>
+  <div>
+    팔로워 : {{person.followers.all|length}}
+    팔로우 : {{person.followings.all|length}}
+  </div>
+
+  <div>
+    {% if user != person %}
+      <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+        {% csrf_token %}
+        {% if user in person.followers.all %}
+          <input type="submit" value="언팔">
+        {% else %}
+          <input type="submit" value="팔로우">
+        {% endif %}
+
+      </form>
+    {% endif %}
+  </div>
 
   {% comment %} 작성한 게시글 {% endcomment %}
   <h2>{{person.username}}이 작성한 게시글</h2>

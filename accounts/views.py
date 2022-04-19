@@ -122,3 +122,13 @@ def profile(request,username) :
 
     return render(request, 'accounts/profile.html',context)
 
+def follow(request,user_pk) :
+
+    me = request.user
+    you = get_object_or_404(get_user_model(),pk=user_pk)
+    if me!=you :
+        if request.user in you.followers.all() :
+            you.followers.remove(me)
+        else :
+            you.followers.add(me)
+    return redirect('accounts:profile', you.username)
