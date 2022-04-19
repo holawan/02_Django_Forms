@@ -15,7 +15,6 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">Hello, {{user}}</a>
-        <a href="{% url 'accounts:profile' request.user.username %}">내 프로필</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -30,6 +29,7 @@
               {% csrf_token %}
               <input type="submit" value="회원탈퇴" class="btn btn-danger">
             </form>
+            <a class="btn btn-warning" href="{% url 'accounts:profile' request.user.username %}">내 프로필</a>
           </div>
         </div>
       </div>

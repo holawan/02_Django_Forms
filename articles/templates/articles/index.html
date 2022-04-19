@@ -20,11 +20,11 @@
       <form action="{% url 'articles:likes' article.pk %}" method='POST'>
         {% csrf_token %}
         {% if user in article.like_users.all %}
-        <button class="btn" style="background-color : transparent;">
+        <button class="btn" style="background-color : transparent; padding: 0;">
           <i class="fa solid fa-heart" style="color:red"></i>
         </button>
         {% else %}
-        <button class="btn" style="background-color : transparent;">
+        <button class="btn" style="background-color : transparent; padding: 0;">
           <i class="fa regular fa-heart" ></i>
         </button>
         {% endif %}
