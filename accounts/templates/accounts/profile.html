@@ -4,8 +4,19 @@
   <h1>{{ person.username}}님의 프로필</h1>
   <hr>
   <div>
-    팔로워 : {{person.followers.all|length}}
-    팔로우 : {{person.followings.all|length}}
+    팔로워 : {{person.followers.all|length}} |
+    날 팔로우 하는 사람  : 
+    {% for person in person.followers.all  %}
+      {{person}}
+    {% endfor %}
+    <hr>
+    팔로우 : {{person.followings.all|length}} |
+    팔로잉 하는 사람  : 
+   
+    {% for person in person.followings.all  %}      
+      {{person}}
+    {% endfor %}
+    <hr>
   </div>
 
   <div>
@@ -38,7 +49,7 @@
   {% comment %} 좋아요를 누른 게시물  {% endcomment %}
   <h2>{{person.username}}이 좋아요를 누른 게시글</h2>
   {% for article in person.like_articles.all %}
-    <p>{{article.title}}</p>
+    <p>{{article.title}}| 게시글의 좋아요 수 :{{ article.like_users.all | length }} </p>
   {% endfor %}
-
+  <a class="btn btn-warning" href="{% url 'articles:index' %}">back</a>
 {% endblock content %}

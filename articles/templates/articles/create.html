@@ -18,7 +18,7 @@
   </form>
 
   <h2>1. Rendering fields manually</h2>
-  <form action="{% url 'articles:create' %}" method="POST">
+  <form action="{% url 'articles:create' %} " method="POST">
     {% csrf_token %}
 
     <div>

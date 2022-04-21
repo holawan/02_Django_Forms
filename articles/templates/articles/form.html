@@ -23,6 +23,6 @@
   <a href="{% url 'articles:index' %}">back</a>
   {% else %}
   <a href="{% url 'articles:index' %}">Home</a>
-  <a href="{% url 'articles:detail' article.pk %}">back</a>
+  <a href="{% url 'articles:detail' article.pk  %}">back</a>
   {% endif %}
 {% endblock content %}
