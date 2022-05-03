@@ -17,21 +17,54 @@
     <p>글 제목: {{ article.title }}</p>
     <p>글 내용: {{ article.content }}</p>
     <div>
-      <form action="{% url 'articles:likes' article.pk %}" method='POST'>
-        {% csrf_token %}
+      <form class="like-form" data-article-pk = "{{article.pk}}">
         {% if user in article.like_users.all %}
-        <button class="btn" style="background-color : transparent; padding: 0;">
-          <i class="fa solid fa-heart" style="color:red"></i>
+        <button  class="btn" style="background-color : transparent; padding: 0;">
+          <i id="input-{{article.pk}}" class="fa solid fa-heart" style="color:red"></i>
         </button>
         {% else %}
         <button class="btn" style="background-color : transparent; padding: 0;">
-          <i class="fa regular fa-heart" ></i>
+          <i id="input-{{article.pk}}" class="fa regular fa-heart" ></i>
         </button>
         {% endif %}
       </form>
+      <p id="cnt-{{article.pk}}">좋아요 수 : {{article.like_users.all|length}}</p>
     </div>
 
     <a href="{% url 'articles:detail' article.pk %}">DETAIL</a>
     <hr>
   {% endfor %}
+
+  <script>
+    const forms = document.querySelectorAll('.like-form')
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    forms.forEach(form => {
+      form.addEventListener('submit',function(event){
+        event.preventDefault()
+        const articlePk = event.target.dataset.articlePk
+        // console.log(articlePk)
+        axios({
+          method : 'post',
+          url : `/articles/${articlePk}/likes/`,
+          headers : {
+            'X-CSRFToken' : csrftoken
+          },
+        })
+        .then(res => {
+          // console.log(res)
+          const liked = res.data.liked
+          const likedCnt = res.data.like_count
+          const likeCnt = document.querySelector(`#cnt-${articlePk}`)
+          likeCnt.innerText = `좋아요 수 : ${likedCnt}`
+          const input = document.querySelector(`#input-${articlePk}`)
+          input.setAttribute("class","fa solid fa-heart")
+          if (liked ===true){
+            input.setAttribute("style","color:red")
+          }else {
+            input.setAttribute("style","color:black")
+          }
+        })
+    })
+  })
+  </script>
 {% endblock content %}

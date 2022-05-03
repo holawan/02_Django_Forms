@@ -130,12 +130,12 @@ def follow(request,user_pk) :
         if me!=you :
             if request.user in you.followers.all() :
                 you.followers.remove(me)
-                liked = False 
+                followed = False 
             else :
                 you.followers.add(me)
-                liked = True
+                followed = True
             context = {
-                'liked' :liked,
+                'followed' :followed,
                 'follower_cnt' : you.followers.count(),
                 'following_cnt' : you.followings.count(),
             }

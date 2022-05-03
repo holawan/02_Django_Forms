@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect,get_object_or_404
 from .forms import Article_updateForm, ArticleForm,CommentForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
@@ -119,9 +120,15 @@ def likes(request,article_pk) :
     if article.like_users.filter(pk=request.user.pk).exists() :
     # if request.user in article.like_users.all() : 
         article.like_users.remove(request.user)
+        liked = False 
     #아니면 좋아요
     else :
         article.like_users.add(request.user)
-    
-    return redirect('articles:index')
+        liked = True 
+    context = {
+        'liked' : liked,
+        'like_count' : article.like_users.count()
+    }
+    return JsonResponse(context)
+    # return redirect('articles:index')
 

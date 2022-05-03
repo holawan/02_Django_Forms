@@ -20,12 +20,11 @@
     <hr>
   <div>
     {% if user != person %}
-      <form data-person-pk = "{{person.pk}}" id="follow_form" action="{% url 'accounts:follow' person.pk %}" method="POST">
-        {% csrf_token %}
+      <form data-person-pk = "{{person.pk}}" id="follow_form" >
         {% if user in person.followers.all %}
-          <button id="follow-button">언팔</button>
+          <button class="btn btn-primary" id="follow-button">언팔</button>
         {% else %}
-          <button id="follow-button">팔로우</button>
+          <button class="btn btn-primary" id="follow-button">팔로우</button>
         {% endif %}
 
       </form>
@@ -52,7 +51,7 @@
   {% endfor %}
   <a class="btn btn-warning" href="{% url 'articles:index' %}">back</a>
 
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  {% comment %} <script src="https://unpkg.com/axios/dist/axios.min.js"></script> {% endcomment %}
   <script>
     const form = document.querySelector('#follow_form')
     const personPk = form.dataset.personPk
@@ -68,10 +67,10 @@
         },
       })
       .then(res => {
-        const liked = res.data.liked
+        const followed = res.data.followed
         // console.log(res)
         const button = document.querySelector('#follow-button')
-        if (liked === true) {
+        if (followed === true) {
           button.innerText = '언팔'
         }else{
           button.innerText = '팔로우'
@@ -83,7 +82,6 @@
         followCnt.innerText = `팔로워 : ${follwerCnt} |팔로우 : ${followingCnt} |`
         const hr = document.createElement('hr')
         followCnt.append(hr)
-        // followCnt.append(hr)
       })
       // axios.post(`/accounts/${personPk}/follow/`)
       // .then(res=>{
