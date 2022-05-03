@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm,PasswordChangeForm
 # Create your views here.
@@ -123,12 +124,20 @@ def profile(request,username) :
     return render(request, 'accounts/profile.html',context)
 
 def follow(request,user_pk) :
-
-    me = request.user
-    you = get_object_or_404(get_user_model(),pk=user_pk)
-    if me!=you :
-        if request.user in you.followers.all() :
-            you.followers.remove(me)
-        else :
-            you.followers.add(me)
-    return redirect('accounts:profile', you.username)
+    if  request.user.is_authenticated :
+        me = request.user
+        you = get_object_or_404(get_user_model(),pk=user_pk)
+        if me!=you :
+            if request.user in you.followers.all() :
+                you.followers.remove(me)
+                liked = False 
+            else :
+                you.followers.add(me)
+                liked = True
+            context = {
+                'liked' :liked,
+                'follower_cnt' : you.followers.count(),
+                'following_cnt' : you.followings.count(),
+            }
+        return JsonResponse(context)
+    return redirect('accounts:login')

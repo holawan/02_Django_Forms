@@ -3,30 +3,29 @@
 {% block content %}
   <h1>{{ person.username}}님의 프로필</h1>
   <hr>
-  <div>
-    팔로워 : {{person.followers.all|length}} |
+  <div id="follow-cnt">
+    팔로워 : {{person.followers.all|length}} |팔로우 : {{person.followings.all|length}} |
+    <hr>
+  </div>
     날 팔로우 하는 사람  : 
     {% for person in person.followers.all  %}
       {{person}}
     {% endfor %}
-    <hr>
-    팔로우 : {{person.followings.all|length}} |
+    |
     팔로잉 하는 사람  : 
    
     {% for person in person.followings.all  %}      
       {{person}}
     {% endfor %}
     <hr>
-  </div>
-
   <div>
     {% if user != person %}
-      <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+      <form data-person-pk = "{{person.pk}}" id="follow_form" action="{% url 'accounts:follow' person.pk %}" method="POST">
         {% csrf_token %}
         {% if user in person.followers.all %}
-          <input type="submit" value="언팔">
+          <button id="follow-button">언팔</button>
         {% else %}
-          <input type="submit" value="팔로우">
+          <button id="follow-button">팔로우</button>
         {% endif %}
 
       </form>
@@ -52,4 +51,44 @@
     <p>{{article.title}}| 게시글의 좋아요 수 :{{ article.like_users.all | length }} </p>
   {% endfor %}
   <a class="btn btn-warning" href="{% url 'articles:index' %}">back</a>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    const form = document.querySelector('#follow_form')
+    const personPk = form.dataset.personPk
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    // console.log(form.dataset.personPk)
+    form.addEventListener('submit',function(event){
+      event.preventDefault()
+      axios({
+        method : 'post',
+        url : `/accounts/${personPk}/follow/`,
+        headers: {
+          'X-CSRFToken' : csrftoken
+        },
+      })
+      .then(res => {
+        const liked = res.data.liked
+        // console.log(res)
+        const button = document.querySelector('#follow-button')
+        if (liked === true) {
+          button.innerText = '언팔'
+        }else{
+          button.innerText = '팔로우'
+        }
+        // console.log(res.data)
+        const followCnt = document.querySelector('#follow-cnt')
+        const followingCnt = res.data.following_cnt
+        const follwerCnt = res.data.follower_cnt
+        followCnt.innerText = `팔로워 : ${follwerCnt} |팔로우 : ${followingCnt} |`
+        const hr = document.createElement('hr')
+        followCnt.append(hr)
+        // followCnt.append(hr)
+      })
+      // axios.post(`/accounts/${personPk}/follow/`)
+      // .then(res=>{
+      //   console.log(res)
+      // })
+    })
+  </script>
 {% endblock content %}
