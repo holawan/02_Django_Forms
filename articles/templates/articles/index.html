@@ -10,7 +10,7 @@
 
   {% endif %}
   
-  <hr>
+  <hr>           
   {% for article in articles %}
     <p>작성자 : <a href="{% url 'accounts:profile' article.user%} ">{{article.user}}</a> </p>
     <p>글 번호: {{ article.pk }}</p>  
