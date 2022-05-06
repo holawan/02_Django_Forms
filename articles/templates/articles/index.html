@@ -16,7 +16,7 @@
     <p>글 번호: {{ article.pk }}</p>  
     <p>글 제목: {{ article.title }}</p>
     <p>글 내용: {{ article.content }}</p>
-    <div>
+    <div id = "articleDiv">
       <form class="like-form" data-article-pk = "{{article.pk}}">
         {% if user in article.like_users.all %}
         <button  class="btn" style="background-color : transparent; padding: 0;">
@@ -78,6 +78,8 @@
 
 <script>
   let page = 2 
+  const articleDiv = document.querySelector('#articleDiv')
+
   document.addEventListener('scroll', function(event){
     const {scrollTop, clientHeight, scrollHeight} = document.documentElement
     if ((clientHeight + scrollTop) >= scrollHeight-5) {
@@ -86,7 +88,10 @@
         url : `/articles/ajax/?page=${page}`
       })
       .then(res => {
-        console.log(res.data)
+        const articles = res.data
+        articles.forEach(article => {
+          console.log(article.title)
+        })
         page++
       })
       .catch(err => console.error(err))
