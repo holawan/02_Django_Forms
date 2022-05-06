@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-
+    'rest_framework',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',

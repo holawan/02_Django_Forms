@@ -38,37 +38,55 @@
   <div class="pagination d-flex justify-content-center">
     {% bootstrap_pagination articles %}
   </div>
-  <script>
-    const forms = document.querySelectorAll('.like-form')
-    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    forms.forEach(form => {
-      form.addEventListener('submit',function(event){
-        event.preventDefault()
-        const articlePk = event.target.dataset.articlePk
-        // console.log(articlePk)
-        axios({
-          method : 'post',
-          url : `/articles/${articlePk}/likes/`,
-          headers : {
-            'X-CSRFToken' : csrftoken
-          },
-        })
-        .then(res => {
-          // console.log(res)
-          const liked = res.data.liked
-          const likedCnt = res.data.like_count
-          const likeCnt = document.querySelector(`#cnt-${articlePk}`)
-          likeCnt.innerText = `좋아요 수 : ${likedCnt}`
-          const input = document.querySelector(`#input-${articlePk}`)
-          input.setAttribute("class","fa solid fa-heart")
-          if (liked ===true){
-            input.setAttribute("style","color:red")
-          }else {
-            input.setAttribute("style","color:black")
-          }
-        })
-    })
-  })
-  </script>
 
 {% endblock content %}
+
+{% block script %}
+<script>
+  const forms = document.querySelectorAll('.like-form')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  forms.forEach(form => {
+    form.addEventListener('submit',function(event){
+      event.preventDefault()
+      const articlePk = event.target.dataset.articlePk
+      // console.log(articlePk)
+      axios({
+        method : 'post',
+        url : `/articles/${articlePk}/likes/`,
+        headers : {
+          'X-CSRFToken' : csrftoken
+        },
+      })
+      .then(res => {
+        // console.log(res)
+        const liked = res.data.liked
+        const likedCnt = res.data.like_count
+        const likeCnt = document.querySelector(`#cnt-${articlePk}`)
+        likeCnt.innerText = `좋아요 수 : ${likedCnt}`
+        const input = document.querySelector(`#input-${articlePk}`)
+        input.setAttribute("class","fa solid fa-heart")
+        if (liked ===true){
+          input.setAttribute("style","color:red")
+        }else {
+          input.setAttribute("style","color:black")
+        }
+      })
+  })
+})
+</script>
+
+
+<script>
+  document.addEventListener('scroll', function(event){
+    const {scrollTop, clientHeight, scrollHeight} = document.documentElement
+    if ((clientHeight + scrollTop) >= scrollHeight-5) {
+      axios({
+        method : 'get',
+        url : '/articles/?page=2'
+      })
+      .then(res => console.log(res.data))
+      .catch(err => console.error(err))
+    }
+  })
+</script>
+{% endblock script %}
