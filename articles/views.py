@@ -1,11 +1,15 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect,get_object_or_404
+
+from articles import seriallizers
 from .forms import Article_updateForm, ArticleForm,CommentForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from .models import Article,Comment
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .seriallizers import ArticleSeriallizer
 # Create your views here.
 @require_safe
 def index(request):
@@ -18,6 +22,17 @@ def index(request):
         'articles': page_obj,
     }
     return render(request, 'articles/index.html', context)
+
+@api_view(['GET'])
+def ajax(request) :
+    articles = Article.objects.order_by('-pk')
+    paginator = Paginator(articles,2)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    seriallizer = ArticleSeriallizer(page_obj,many=True)
+    return Response(seriallizer.data)
 
 # 요청에 따라 실행을 구분하고 new와 create 함수 합치기 
 @login_required

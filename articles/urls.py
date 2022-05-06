@@ -16,4 +16,5 @@ urlpatterns = [
     path('<int:article_pk>/comments/<int:comment_pk>/delete/',views.comments_delete,
     name='comments_delete'),
     path('<int:article_pk>/likes/', views.likes, name='likes'),
+    path('ajax/',views.ajax,name='ajax')
 ]

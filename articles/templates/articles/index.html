@@ -77,14 +77,18 @@
 
 
 <script>
+  let page = 2 
   document.addEventListener('scroll', function(event){
     const {scrollTop, clientHeight, scrollHeight} = document.documentElement
     if ((clientHeight + scrollTop) >= scrollHeight-5) {
       axios({
         method : 'get',
-        url : '/articles/?page=2'
+        url : `/articles/ajax/?page=${page}`
       })
-      .then(res => console.log(res.data))
+      .then(res => {
+        console.log(res.data)
+        page++
+      })
       .catch(err => console.error(err))
     }
   })
