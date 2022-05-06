@@ -9,7 +9,7 @@
     <a href="{% url 'accounts:login' %}?next=/articles/create/">[새 글을 작성하려면 로그인 하세요]</a>
 
   {% endif %}
-  
+
   <hr>           
   {% for article in articles %}
     <p>작성자 : <a href="{% url 'accounts:profile' article.user%} ">{{article.user}}</a> </p>
@@ -33,8 +33,24 @@
 
     <a href="{% url 'articles:detail' article.pk %}">DETAIL</a>
     <hr>
-  {% endfor %}
+  {% endfor %} 
+  <div class="pagination">
+    <span class="step-links">
+        {% if articles.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ articles.previous_page_number }}">previous</a>
+        {% endif %}
 
+        <span class="current">
+            Page {{ articles.number }} of {{ articles.paginator.num_pages }}.
+        </span>
+
+        {% if articles.has_next %}
+            <a href="?page={{ articles.next_page_number }}">next</a>
+            <a href="?page={{ articles.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
   <script>
     const forms = document.querySelectorAll('.like-form')
     const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;

@@ -4,14 +4,18 @@ from .forms import Article_updateForm, ArticleForm,CommentForm
 from django.views.decorators.http import require_http_methods, require_POST, require_safe
 from .models import Article,Comment
 from django.contrib.auth.decorators import login_required
-
+from django.core.paginator import Paginator
 
 # Create your views here.
 @require_safe
 def index(request):
     articles = Article.objects.order_by('-pk')
+    paginator = Paginator(articles,2)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = {
-        'articles': articles,
+        'articles': page_obj,
     }
     return render(request, 'articles/index.html', context)
 
